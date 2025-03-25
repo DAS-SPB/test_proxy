@@ -58,12 +58,12 @@ class PaymentRequest(BaseModel):
 
 class PaymentResponse(BaseModel):
     order_id: str = Field(..., description="Order identifier", example="3fa85f64-5717-4562-b3fc-2c963f66afa6")
-    message: str = Field(..., description="Payment processing status", example="Payment created")
+    message: str = Field(..., description="Payment processing status", example="Payment created successfully")
     model_config = {
         "json_schema_extra": {
             "example": {
                 "order_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                "message": "Payment created"
+                "message": "Payment created successfully"
             }
         }
     }
