@@ -7,8 +7,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-fastapi = "^0.115.11"
-pydantic = "^2.10.6"
+fastapi = "^0.115.12"
+pydantic = "^2.11.3"
 pyjwt = "^2.10.1"
 hvac = "^2.3.0"
 regex = "^2024.11.6"

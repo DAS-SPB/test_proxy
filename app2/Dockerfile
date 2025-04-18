@@ -8,6 +8,6 @@ COPY app2 ./app2
 
 RUN pip install poetry && \
     poetry config virtualenvs.create false && \
-    poetry install --no-dev
+    poetry install --only main
 
 CMD ["uvicorn", "app2.main:app", "--host", "0.0.0.0", "--port", "8000"]
