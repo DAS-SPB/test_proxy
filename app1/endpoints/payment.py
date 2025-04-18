@@ -27,7 +27,7 @@ async def create_payment(payload: PaymentRequest):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
-                url=app2_url,
+                url=f"{app2_url}/transfer",
                 headers={"api_key": app2_api_key},
                 json=money_transfer_request.dict()
             )

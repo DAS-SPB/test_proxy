@@ -98,7 +98,7 @@ async def create_transfer(request: Request, payload: MoneyTransferRequest):
     async with httpx.AsyncClient() as client:
         try:
             response = await client.post(
-                url=app2_url,
+                url=f"{app2_url}/transfer",
                 headers={"api_key": app2_api_key},
                 json=payload.dict()
             )

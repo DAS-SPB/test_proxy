@@ -2,9 +2,11 @@ from fastapi import FastAPI
 from proxy.endpoints import transfer_proxy
 from proxy.middleware import LoggingMiddleware
 
+PREFIX = "/proxy"
+
 proxy = FastAPI()
 
-proxy.include_router(transfer_proxy.router)
+proxy.include_router(transfer_proxy.router, prefix=PREFIX)
 proxy.add_middleware(LoggingMiddleware)
 
 
