@@ -4,6 +4,8 @@ services:
     image: hashicorp/vault:latest
     ports:
       - "8200:8200"
+    env_file:
+      - ./.env.local
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN_ID}
       VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
@@ -56,6 +58,8 @@ services:
     ports:
       - "8000:8000"
       - "8088:8088"
+    env_file:
+      - ./.env.local
     environment:
       SPLUNK_START_ARGS: "--accept-license"
       SPLUNK_PASSWORD: "${SPLUNK_PASSWORD}"

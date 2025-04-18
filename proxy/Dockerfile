@@ -1,6 +1,6 @@
 FROM python:3.12.1-slim
 
-WORKDIR /app
+WORKDIR /proxy
 
 COPY pyproject.toml poetry.lock ./
 
