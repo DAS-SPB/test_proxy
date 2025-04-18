@@ -19,8 +19,11 @@ services:
     env_file:
       - ./.env.local
     volumes:
-      - ./scripts/vault_init.sh:/vault_init.sh:ro
-    entrypoint: ["/vault_init.sh"]
+      - type: bind
+        source: ./scripts/vault_init.sh
+        target: /vault_init.sh
+        read_only: true
+    entrypoint: ["/bin/sh", "/vault_init.sh"]
     restart: "no"
 
   app1:
