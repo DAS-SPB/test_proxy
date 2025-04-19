@@ -3,13 +3,12 @@ set -e
 
 VAULT_ADDR="http://vault:8200"
 VAULT_TOKEN="${VAULT_DEV_ROOT_TOKEN_ID}"
+export VAULT_ADDR VAULT_TOKEN
 
 # 1) waiting fot vault to start
-until curl --silent --fail $VAULT_ADDR/v1/sys/health >/dev/null 2>&1; do
+until vault status -format=json >/dev/null 2>&1; do
   sleep 1
 done
-
-export VAULT_ADDR VAULT_TOKEN
 
 # 2) app1 secrets
 vault kv put secret/app1 \
