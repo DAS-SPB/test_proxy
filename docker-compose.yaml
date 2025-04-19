@@ -1,21 +1,31 @@
 version: '3.8'
+
+secrets:
+  vault_token:
+    file: ./secrets/vault_token.txt
+
 services:
   vault:
     image: hashicorp/vault:latest
-    ports:
-      - "8200:8200"
     env_file:
       - ./.env.local
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN_ID}
       VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    ports:
+      - "8200:8200"
     volumes:
       - vault_data:/vault/file
+    healthcheck:
+      test: [ "CMD", "vault", "status", "-format=json" ]
+      interval: 5s
+      retries: 5
 
   vault-init:
     image: hashicorp/vault:latest
     depends_on:
-      - vault
+      vault:
+        condition: service_healthy
     env_file:
       - ./.env.local
     volumes:
@@ -23,7 +33,7 @@ services:
         source: ./scripts/vault_init.sh
         target: /vault_init.sh
         read_only: true
-    entrypoint: ["/bin/sh", "/vault_init.sh"]
+    entrypoint: [ "/bin/sh", "/vault_init.sh" ]
     restart: "no"
 
   app1:
@@ -31,9 +41,11 @@ services:
       context: .
       dockerfile: app1/Dockerfile
     ports:
-      - "8000:8000"
+      - "8001:8001"
     env_file:
       - ./.env.local
+    secrets:
+      - vault_token
     depends_on:
       - vault
       - vault-init
@@ -43,9 +55,11 @@ services:
       context: .
       dockerfile: proxy/Dockerfile
     ports:
-      - "8080:8080"
+      - "8003:8003"
     env_file:
       - ./.env.local
+    secrets:
+      - vault_token
     depends_on:
       - vault
       - vault-init
@@ -55,23 +69,25 @@ services:
       context: .
       dockerfile: app2/Dockerfile
     ports:
-      - "8001:8001"
+      - "8002:8002"
     env_file:
       - ./.env.local
+    secrets:
+      - vault_token
     depends_on:
       - vault
       - vault-init
 
   splunk:
     image: splunk/splunk:latest
-    ports:
-      - "8000:8000"
-      - "8088:8088"
     env_file:
       - ./.env.local
     environment:
       SPLUNK_START_ARGS: "--accept-license"
       SPLUNK_PASSWORD: "${SPLUNK_PASSWORD}"
+    ports:
+      - "8000:8000"
+      - "8088:8088"
 
 volumes:
   vault_data:

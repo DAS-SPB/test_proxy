@@ -10,4 +10,4 @@ RUN pip install poetry && \
     poetry config virtualenvs.create false && \
     poetry install --only main --no-root
 
-CMD ["uvicorn", "app1.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "-m", "uvicorn", "app1.main:app", "--host", "0.0.0.0", "--port", "8001"]
