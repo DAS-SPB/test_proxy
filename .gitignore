@@ -15,7 +15,7 @@ dist/
 # Docker files
 docker-compose.override.yml
 .env
-.env.local
+.env
 .env.ci
 
 # Log files
